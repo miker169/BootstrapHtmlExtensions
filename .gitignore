@@ -1,0 +1,6 @@
+#Build Folders (You can keep bin if you'd like to store dll's and pdb's)
+bin
+obj
+
+# mstest test results
+TestResults
