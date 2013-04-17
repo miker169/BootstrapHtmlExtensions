@@ -2,6 +2,7 @@
 
 namespace BootStrapHtmlExtensions
 {
+    using System;
     using System.Web.Mvc;
 
     using BootStrapHtmlExtensions.Extensions;
@@ -32,6 +33,8 @@ namespace BootStrapHtmlExtensions
         /// <param name="buttonType">Type of the button</param>
         /// <param name="buttonSize">Size of the button</param>
         /// <param name="disabled">if set to <c>true</c> [disabled].</param>
+        /// <param name="icon">The icon.</param>
+        /// <param name="inverted">if set to <c>true</c> [icon is inverted]</param>
         /// <returns>An MvcHtmlString</returns>
         public static MvcHtmlString BootstrapButton(
             this HtmlHelper htmlHelper,
@@ -39,37 +42,21 @@ namespace BootStrapHtmlExtensions
             string text,
             ButtonType buttonType = ButtonType.@default,
             ButtonSize buttonSize = ButtonSize.@default,
-            bool disabled = false)
+            bool disabled = false,
+            Icon icon = Icon.@default,
+            bool inverted = false)
         {
-            var b = new TagBuilder("button");
-            var typeCss = Common.GetCssClass(buttonType);
-            var sizeCss = Common.GetCssClass(buttonSize);
-            
-            if (! string.IsNullOrEmpty(typeCss))
-            {
-                b.AddCssClass(typeCss);
-            }
-
-            if (! string.IsNullOrEmpty(sizeCss))
-            {
-                b.AddCssClass(sizeCss);
-            }
-
-           
-            b.AddCssClass("btn");
-
-            if (disabled)
-            {
-                b.Attributes.Add("disabled", "disabled");
-                b.AddCssClass("disabled");
-            }
-
-            b.Attributes.Add("id", id);
-            b.InnerHtml = text;
-
-            return b.ToMvcHtmlString();
-
-
+            return ButtonBuilder(
+                htmlHelper,
+                id,
+                text,
+                string.Empty,
+                new TagBuilder("button"),
+                buttonType,
+                buttonSize,
+                disabled,
+                icon,
+                inverted);
         }
 
         /// <summary>
@@ -81,6 +68,8 @@ namespace BootStrapHtmlExtensions
         /// <param name="navigateTo">The navigate to.</param>
         /// <param name="buttonType">Type of the button.</param>
         /// <param name="buttonSize">Size of the button.</param>
+        /// <param name="icon">The icon</param>
+        /// <param name="inverted">if set to <c>true</c> [icon is inverted].</param>
         /// <returns>An MvcHtmlstring</returns>
         public static MvcHtmlString BootstrapLinkButton(
             this HtmlHelper htmlHelper,
@@ -88,40 +77,139 @@ namespace BootStrapHtmlExtensions
             string text,
             string navigateTo,
             ButtonType buttonType = ButtonType.@default,
-            ButtonSize buttonSize = ButtonSize.@default)
+            ButtonSize buttonSize = ButtonSize.@default,
+            Icon icon = Icon.@default,
+            bool inverted = false)
         {
-            var a = new TagBuilder("a");
-            var typeCss = Common.GetCssClass(buttonType);
-            var sizeCss = Common.GetCssClass(buttonSize);
+            return ButtonBuilder(
+                htmlHelper, id, text, navigateTo, new TagBuilder("a"), buttonType, buttonSize, false, icon, inverted);
+        }
 
-            if (! string.IsNullOrEmpty(typeCss))
+        public static MvcHtmlString BootStrapSubmitButton(
+            this HtmlHelper htmlHelper,
+            string id,
+            string text,
+            ButtonType buttonType = ButtonType.@default,
+            ButtonSize buttonSize = ButtonSize.@default,
+            bool disabled = false,
+            Icon icon = Icon.@default,
+            bool inverted = false)
+        {
+            var tag = new TagBuilder("input");
+            tag.Attributes.Add("type", "submit");
+            return ButtonBuilder(
+                htmlHelper, id, text, string.Empty, tag, buttonType, buttonSize, disabled, icon, inverted);
+        } 
+
+        
+
+        /// <summary>
+        /// Builds a button
+        /// </summary>
+        /// <param name="htmlHelper">The HTML helper</param>
+        /// <param name="id">The id.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="navigateTo">The navigate to.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="buttonType">The button type</param>
+        /// <param name="buttonSize">The button size</param>
+        /// <param name="disabled">if set to <c>true</c> [disabled]</param>
+        /// <param name="icon">The icon.</param>
+        /// <param name="inverted">if set to <c>true</c> [icon is inverted]</param>
+        /// <returns>An MvcHtmlString</returns>
+        private static MvcHtmlString ButtonBuilder(
+            HtmlHelper htmlHelper,
+            string id,
+            string text,
+            string navigateTo,
+            TagBuilder tag,
+            ButtonType buttonType,
+            ButtonSize buttonSize,
+            bool disabled,
+            Icon icon,
+            bool inverted)
+        {
+            var typeCss = GetCssClass(buttonType);
+            var sizeCss = GetCssClass(buttonSize);
+            var iconHtml = htmlHelper.BootstrapIcon(icon, inverted);
+
+            if (!string.IsNullOrEmpty(typeCss))
             {
-                a.AddCssClass(typeCss);
+                tag.AddCssClass(typeCss);
             }
 
-            if (! string.IsNullOrEmpty(sizeCss))
+            if (!string.IsNullOrEmpty(sizeCss))
             {
-                a.AddCssClass(sizeCss);
+                tag.AddCssClass(sizeCss);
             }
-           
-            a.AddCssClass("btn");
 
-            a.Attributes.Add("id", id);
-            a.Attributes.Add("href", navigateTo);
-            a.InnerHtml = text;
+            tag.AddCssClass("btn");
 
-            return a.ToMvcHtmlString();
+            if (!string.IsNullOrEmpty(id))
+            {
+                tag.Attributes.Add("id", id);
+            }
+
+            if (!string.IsNullOrEmpty(navigateTo))
+            {
+                tag.Attributes.Add("href", navigateTo);
+            }
+
+            if (disabled)
+            {
+                tag.Attributes.Add("disabled", "disabled");
+                tag.AddCssClass("disabled");
+            }
+
+            tag.InnerHtml = iconHtml + text;
+            return tag.ToMvcHtmlString();
         }
 
         /// <summary>
-        /// Gets the Button Container
+        /// Gets the CSS class
         /// </summary>
-        /// <returns>A Tag Builder</returns>
-        private static TagBuilder GetButtonContainer()
+        /// <param name="buttonType">Type of the button</param>
+        /// <returns>The css class of the button type</returns>
+        private static string GetCssClass(ButtonType buttonType)
         {
-            var b = new TagBuilder("div");
-            b.AddCssClass("form-actions");
-            return b;
+            switch (buttonType)
+            {
+                case ButtonType.@default:
+                    return String.Empty;
+                case ButtonType.primary:
+                    return "btn-primary";
+                case ButtonType.info:
+                    return "btn-info";
+                case ButtonType.success:
+                    return "btn-success";
+                case ButtonType.warning:
+                    return "btn-warning";
+                case ButtonType.danger:
+                    return "btn-danger";
+                default:
+                    return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the CSS class
+        /// </summary>
+        /// <param name="buttonSize">size of the button</param>
+        /// <returns>The css class of the button size</returns>
+        private static string GetCssClass(ButtonSize buttonSize)
+        {
+            switch (buttonSize)
+            {
+                case ButtonSize.@default:
+                    return String.Empty;
+                case ButtonSize.large:
+                    return "btn-large";
+                case ButtonSize.small:
+                    return "btn-small";
+                default:
+                    return String.Empty;
+
+            }
         }
     }
 }
