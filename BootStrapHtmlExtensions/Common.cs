@@ -211,6 +211,17 @@
             return l.ToMvcHtmlString();
         }
 
+        /// <summary>
+        /// Gets the buttong container
+        /// </summary>
+        /// <returns>A TagBuilder</returns>
+        internal static TagBuilder GetButtonContainer()
+        {
+            TagBuilder b = new TagBuilder("div");
+            b.AddCssClass("form-actions");
+            return b;
+        }
+
         
 
        

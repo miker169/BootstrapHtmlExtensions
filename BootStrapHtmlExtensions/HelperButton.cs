@@ -12,23 +12,15 @@ namespace BootStrapHtmlExtensions
     public static class HelperButton
     {
         /// <summary>
-        /// Start of the bootstrap button container
+        /// A container for the form buttons
         /// </summary>
-        /// <param name="htmlHelper">The HTML helper</param>
-        /// <returns>An MvcHTMLString</returns>
-        public static MvcHtmlString BootstrapButtonsBegin(this HtmlHelper htmlHelper)
-        {
-            return GetButtonContainer().ToString(TagRenderMode.StartTag).ToMvcHtmlString();
-        }
-
-        /// <summary>
-        /// End of the bootstrap button container
-        /// </summary>
-        /// <param name="htmlHelper">An HTML helper</param>
         /// <returns>An MvcHtmlString</returns>
-        public static MvcHtmlString BootstrapButtonsEnd(this HtmlHelper htmlHelper)
+        public static BootstrapButtonContainer BootstrapFormButtonContainer(this HtmlHelper htmlHelper)
         {
-            return GetButtonContainer().ToString(TagRenderMode.EndTag).ToMvcHtmlString();
+            htmlHelper.ViewContext.Writer.Write(Common.GetButtonContainer().ToString(TagRenderMode.StartTag));
+            var buttonContainer = new BootstrapButtonContainer(htmlHelper.ViewContext);
+            return buttonContainer;
+
         }
 
         /// <summary>
@@ -49,9 +41,21 @@ namespace BootStrapHtmlExtensions
             ButtonSize buttonSize = ButtonSize.@default,
             bool disabled = false)
         {
-            TagBuilder b = new TagBuilder("button");
-            b.AddCssClass(Common.GetCssClass(buttonType));
-            b.AddCssClass(Common.GetCssClass(buttonSize));
+            var b = new TagBuilder("button");
+            var typeCss = Common.GetCssClass(buttonType);
+            var sizeCss = Common.GetCssClass(buttonSize);
+            
+            if (! string.IsNullOrEmpty(typeCss))
+            {
+                b.AddCssClass(typeCss);
+            }
+
+            if (! string.IsNullOrEmpty(sizeCss))
+            {
+                b.AddCssClass(sizeCss);
+            }
+
+           
             b.AddCssClass("btn");
 
             if (disabled)
@@ -87,8 +91,19 @@ namespace BootStrapHtmlExtensions
             ButtonSize buttonSize = ButtonSize.@default)
         {
             var a = new TagBuilder("a");
-            a.AddCssClass(Common.GetCssClass(buttonType));
-            a.AddCssClass(Common.GetCssClass(buttonSize));
+            var typeCss = Common.GetCssClass(buttonType);
+            var sizeCss = Common.GetCssClass(buttonSize);
+
+            if (! string.IsNullOrEmpty(typeCss))
+            {
+                a.AddCssClass(typeCss);
+            }
+
+            if (! string.IsNullOrEmpty(sizeCss))
+            {
+                a.AddCssClass(sizeCss);
+            }
+           
             a.AddCssClass("btn");
 
             a.Attributes.Add("id", id);
