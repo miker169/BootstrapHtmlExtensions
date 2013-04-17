@@ -137,7 +137,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_Default()
         {
-            string expected = "<input class=\"btn\" id=\"id\" type=\"submit\">text</input>";
+            var expected = "<input class=\"btn\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text").ToString();
@@ -147,16 +147,27 @@
         [TestMethod]
         public void BootstrapSubmitButton_Primary()
         {
-            string expected = "<input class=\"btn btn-primary\" id=\"id\" type=\"submit\">text</input>";
+            var expected = "<input class=\"btn btn-primary\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.primary).ToString();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void BootstrapButton_ButtonType_Primary_IsSubmit()
+        {
+            var expected = "<button class=\"btn btn-primary\" id=\"id\" type=\"submit\">text</button>";
+            var htmlHelper = Util.GetHtmlHelper();
+
+            var result = htmlHelper.BootstrapButton("id", "text", ButtonType.primary, isSubmit: true).ToString();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod]
         public void BootstrapSubmitButton_Info()
         {
-            string expected = "<input class=\"btn btn-info\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-info\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.info).ToString();
@@ -166,7 +177,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_Success()
         {
-            string expected = "<input class=\"btn btn-success\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-success\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.success).ToString();
@@ -176,7 +187,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_Warning()
         {
-            string expected = "<input class=\"btn btn-warning\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-warning\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.warning).ToString();
@@ -186,7 +197,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_Danger()
         {
-            string expected = "<input class=\"btn btn-danger\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-danger\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.danger).ToString();
@@ -196,7 +207,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_ButtonSize_Small()
         {
-            string expected = "<input class=\"btn btn-small\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-small\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.@default, ButtonSize.small).ToString();
@@ -206,7 +217,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_ButtonSize_Large()
         {
-            string expected = "<input class=\"btn btn-large\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"btn btn-large\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.@default,ButtonSize.large).ToString();
@@ -216,7 +227,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_Disable_True()
         {
-            string expected = "<input class=\"disabled btn\" disabled=\"disabled\" id=\"id\" type=\"submit\">text</input>";
+            string expected = "<input class=\"disabled btn\" disabled=\"disabled\" id=\"id\" type=\"submit\" value=\"text\"></input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text",ButtonType.@default, ButtonSize.@default,true).ToString();
@@ -226,7 +237,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_IconGlass_Not_Inverted()
         {
-            string expected = "<input class=\"btn\" id=\"id\" type=\"submit\"><i class=\"icon-glass\"></i> text</input>";
+            string expected = "<input class=\"btn\" id=\"id\" type=\"submit\" value=\"text\"><i class=\"icon-glass\"></i> </input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text",ButtonType.@default,ButtonSize.@default,false,Icon.icon_glass).ToString();
@@ -236,7 +247,7 @@
         [TestMethod]
         public void BootstrapSubmitButton_IconGlasss_Inverted()
         {
-            string expected = "<input class=\"btn\" id=\"id\" type=\"submit\"><i class=\"icon-white icon-glass\"></i> text</input>";
+            string expected = "<input class=\"btn\" id=\"id\" type=\"submit\" value=\"text\"><i class=\"icon-white icon-glass\"></i> </input>";
             var htmlHelper = Util.GetHtmlHelper();
 
             var result = htmlHelper.BootStrapSubmitButton("id", "text", ButtonType.@default,ButtonSize.@default,false,Icon.icon_glass,true).ToString();

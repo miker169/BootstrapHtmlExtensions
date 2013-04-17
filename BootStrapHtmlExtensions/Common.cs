@@ -46,10 +46,20 @@
             var sb = new StringBuilder();
             foreach (var c in css)
             {
-                sb.Append(string.Format("{0}", c));
+                sb.Append(string.Format("{0} ", c));
             }
 
-            return sb.ToString();
+            var r = sb.ToString();
+            if (string.IsNullOrEmpty(r))
+            {
+                return string.Empty;
+            }
+
+            if (r.Length > 2)
+            {
+                return r.Substring(0, r.Length - 1);
+            }
+            return r;
         }
       
         /// <summary>

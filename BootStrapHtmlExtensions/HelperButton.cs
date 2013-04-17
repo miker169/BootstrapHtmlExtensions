@@ -35,6 +35,7 @@ namespace BootStrapHtmlExtensions
         /// <param name="disabled">if set to <c>true</c> [disabled].</param>
         /// <param name="icon">The icon.</param>
         /// <param name="inverted">if set to <c>true</c> [icon is inverted]</param>
+        /// <param name="isSubmit">if set to <c>true</c> [is submit]</param>
         /// <returns>An MvcHtmlString</returns>
         public static MvcHtmlString BootstrapButton(
             this HtmlHelper htmlHelper,
@@ -44,14 +45,20 @@ namespace BootStrapHtmlExtensions
             ButtonSize buttonSize = ButtonSize.@default,
             bool disabled = false,
             Icon icon = Icon.@default,
-            bool inverted = false)
+            bool inverted = false,
+            bool isSubmit = false)
         {
+            var tag = new TagBuilder("button");
+            if (isSubmit)
+            {
+                tag.Attributes.Add("type", "submit");
+            }
             return ButtonBuilder(
                 htmlHelper,
                 id,
                 text,
                 string.Empty,
-                new TagBuilder("button"),
+                tag,
                 buttonType,
                 buttonSize,
                 disabled,
@@ -97,8 +104,9 @@ namespace BootStrapHtmlExtensions
         {
             var tag = new TagBuilder("input");
             tag.Attributes.Add("type", "submit");
+            tag.Attributes.Add("value",text);
             return ButtonBuilder(
-                htmlHelper, id, text, string.Empty, tag, buttonType, buttonSize, disabled, icon, inverted);
+                htmlHelper, id, string.Empty, string.Empty, tag, buttonType, buttonSize, disabled, icon, inverted);
         } 
 
         

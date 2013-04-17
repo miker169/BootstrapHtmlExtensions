@@ -16,5 +16,15 @@ namespace TestWeb.Controllers
             return View();
         }
 
+        public ActionResult Icons()
+        {
+            return this.View();
+        }
+
+        public ActionResult Buttons()
+        {
+            return this.View();
+        }
+
     }
 }
