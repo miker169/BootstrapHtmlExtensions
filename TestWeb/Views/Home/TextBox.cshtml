@@ -1,0 +1,19 @@
+﻿@model TestWeb.Models.Contact
+
+@{
+    ViewBag.Title = "TextBox";
+}
+
+<div class="row-fluid">
+    @using (Html.BeginForm("TextBox", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <fieldset>
+           @Html.BootstrapTextBoxFor(m => m.FirstName)
+           @Html.BootstrapTextBoxFor(m => m.LastName)
+           @using (Html.BootstrapFormButtonContainer())
+           {
+               @Html.BootStrapSubmitButton("btnSubmit", "Save", ButtonType.@default, ButtonSize.@default, false)
+           }
+        </fieldset>
+    }
+</div>

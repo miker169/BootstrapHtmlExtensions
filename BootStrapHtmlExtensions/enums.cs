@@ -36,7 +36,9 @@ namespace BootStrapHtmlExtensions
     {
         small,
         medium,
-        large
+        large,
+        xlarge,
+        xxlarge
     }
 
     /// <summary>

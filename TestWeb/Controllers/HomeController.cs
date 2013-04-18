@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace TestWeb.Controllers
 {
+    using TestWeb.Models;
+
     public class HomeController : Controller
     {
         //
@@ -24,6 +26,22 @@ namespace TestWeb.Controllers
         public ActionResult Buttons()
         {
             return this.View();
+        }
+
+        public ActionResult TextBox()
+        {
+            var model = new Contact() { Id = 1 };
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public ActionResult TextBox(Contact model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("TextBox");
+            }
+            return View(model);
         }
 
     }
